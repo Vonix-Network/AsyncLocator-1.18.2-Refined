@@ -31,7 +31,8 @@ logoFile="logo.png" #optional
 # A text field displayed in the mod UI
 # credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI
-authors="bright_spark" #optional
+authors="bright_spark, Alvaro842DEV (Refined), Vonix-Network" #optional
+issueTrackerURL="https://github.com/Vonix-Network/AsyncLocator-1.18.2-Refined/issues"
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 Changes the searching of features to be asynchronous to mitigate associated lag
