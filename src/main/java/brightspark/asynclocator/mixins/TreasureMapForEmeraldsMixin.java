@@ -1,5 +1,6 @@
 package brightspark.asynclocator.mixins;
 
+import brightspark.asynclocator.AsyncLocatorConfig;
 import brightspark.asynclocator.AsyncLocatorMod;
 import brightspark.asynclocator.logic.MerchantLogic;
 import net.minecraft.tags.TagKey;
@@ -56,6 +57,8 @@ public class TreasureMapForEmeraldsMixin {
 		cancellable = true
 	)
 	public void updateMapAsync(Entity pTrader, Random pRand, CallbackInfoReturnable<MerchantOffer> callbackInfo) {
+		if (!AsyncLocatorConfig.VILLAGER_TRADE_ENABLED.get()) return;
+
 		AsyncLocatorMod.logDebug("Intercepted TreasureMapForEmeralds#getOffer call");
 		MerchantOffer offer = MerchantLogic.updateMapAsync(
 			pTrader, emeraldCost, displayName, destinationType, maxUses, villagerXp, destination
