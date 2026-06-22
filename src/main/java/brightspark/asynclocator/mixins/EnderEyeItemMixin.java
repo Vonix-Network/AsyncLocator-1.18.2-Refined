@@ -1,5 +1,6 @@
 package brightspark.asynclocator.mixins;
 
+import brightspark.asynclocator.AsyncLocatorConfig;
 import brightspark.asynclocator.AsyncLocatorMod;
 import brightspark.asynclocator.logic.EnderEyeItemLogic;
 import net.minecraft.advancements.critereon.UsedEnderEyeTrigger;
@@ -27,8 +28,9 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(EnderEyeItem.class)
 public class EnderEyeItemMixin {
 	/*
-		Intercept EnderEyeItem#use call and return BlockPos.ZERO instead. It won't be used in the EyeOfEnder entity
-		created later either, as we need to set the actual location ourselves.
+		Intercept EnderEyeItem#use call. When the feature is enabled, return BlockPos.ZERO as a
+		placeholder (the real location is set later by the async task). When disabled, run the
+		vanilla synchronous search so the eye still works.
 	 */
 	@Redirect(
 		method = "use",
@@ -44,8 +46,12 @@ public class EnderEyeItemMixin {
 		int pRadius,
 		boolean pSkipExistingChunks
 	) {
-		AsyncLocatorMod.logDebug("Intercepted EnderEyeItem#use call");
-		return BlockPos.ZERO;
+		if (AsyncLocatorConfig.EYE_OF_ENDER_ENABLED.get()) {
+			AsyncLocatorMod.logDebug("Intercepted EnderEyeItem#use call");
+			return BlockPos.ZERO;
+		}
+		// Feature disabled - run vanilla synchronous lookup
+		return serverlevel.findNearestMapFeature(pStructureTag, pPos, pRadius, pSkipExistingChunks);
 	}
 
 	// Start the async locate task here so we have the eye of ender entity for context
@@ -68,6 +74,7 @@ public class EnderEyeItemMixin {
 		BlockPos blockpos,
 		EyeOfEnder eyeofender
 	) {
+		if (!AsyncLocatorConfig.EYE_OF_ENDER_ENABLED.get()) return;
 		EnderEyeItemLogic.locateAsync(serverlevel, pPlayer, eyeofender, (EnderEyeItem) (Object) this);
 	}
 
@@ -79,7 +86,9 @@ public class EnderEyeItemMixin {
 		)
 	)
 	public void eyeOfEnderSignalTo(EyeOfEnder eyeOfEnder, BlockPos blockpos) {
-		// Do nothing - we'll do this later if a location is found
+		if (!AsyncLocatorConfig.EYE_OF_ENDER_ENABLED.get())
+			eyeOfEnder.signalTo(blockpos);
+		// else: deferred until the async task completes
 	}
 
 	@Redirect(
@@ -90,7 +99,9 @@ public class EnderEyeItemMixin {
 		)
 	)
 	public void triggerUsedEnderEyeCriteria(UsedEnderEyeTrigger trigger, ServerPlayer player, BlockPos pos) {
-		// Do nothing - we'll do this later if a location is found
+		if (!AsyncLocatorConfig.EYE_OF_ENDER_ENABLED.get())
+			trigger.trigger(player, pos);
+		// else: deferred until the async task completes
 	}
 
 	@Redirect(
@@ -100,7 +111,9 @@ public class EnderEyeItemMixin {
 			target = "Lnet/minecraft/world/entity/player/Player;awardStat(Lnet/minecraft/stats/Stat;)V"
 		)
 	)
-	public void playerAwardStat(Player instance, Stat<?> pStat) {
-		// Do nothing - we'll do this later if a location is found
+	public void playerAwardStat(Player player, Stat<?> pStat) {
+		if (!AsyncLocatorConfig.EYE_OF_ENDER_ENABLED.get())
+			player.awardStat(pStat);
+		// else: deferred until the async task completes
 	}
 }

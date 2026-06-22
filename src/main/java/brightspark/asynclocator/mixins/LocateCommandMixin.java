@@ -1,5 +1,6 @@
 package brightspark.asynclocator.mixins;
 
+import brightspark.asynclocator.AsyncLocatorConfig;
 import brightspark.asynclocator.AsyncLocatorMod;
 import brightspark.asynclocator.logic.LocateCommandLogic;
 import net.minecraft.commands.CommandSource;
@@ -29,6 +30,8 @@ public class LocateCommandMixin {
 		locals = LocalCapture.CAPTURE_FAILSOFT
 	)
 	private static void findLocationAsync(CommandSourceStack sourceStack, ResourceOrTagLocationArgument.Result<ConfiguredStructureFeature<?, ?>> argResult, CallbackInfoReturnable<Integer> cir, Registry<ConfiguredStructureFeature<?, ?>> registry, HolderSet<ConfiguredStructureFeature<?, ?>> holderset) {
+		if (!AsyncLocatorConfig.LOCATE_COMMAND_ENABLED.get()) return;
+
 		CommandSource source = ((CommandSourceStackAccess) sourceStack).getSource();
 		if (source instanceof ServerPlayer || source instanceof MinecraftServer) {
 			AsyncLocatorMod.logDebug("Intercepted LocateCommand#locate call");
