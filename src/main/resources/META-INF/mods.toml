@@ -1,13 +1,13 @@
 modLoader = "javafml"
 loaderVersion = "[40,)"
 license = "MIT License"
-issueTrackerURL = "https://github.com/Vonix-Network/AsyncLocator-1.18.2-Refined/issues"
+issueTrackerURL = "https://github.com/Vonix-Network/AsyncLocator-1.18.2-Reforged/issues"
 
 [[mods]]
 modId = "asynclocator"
 version = "${file.jarVersion}"
 displayName = "Async Locator"
-displayURL = "https://github.com/Vonix-Network/AsyncLocator-1.18.2-Refined"
+displayURL = "https://github.com/Vonix-Network/AsyncLocator-1.18.2-Reforged"
 logoFile = "logo.png"
 authors = "bright_spark, Alvaro842DEV (Refined), Vonix-Network"
 displayTest = "IGNORE_SERVER_VERSION"
@@ -15,7 +15,7 @@ description = '''
 Performs structure-location searches asynchronously on a dedicated thread pool so the main
 server tick is not blocked.
 
-This 1.18.2-Refined fork backports the Lootr-compatibility fix from
+This 1.18.2-Reforged fork backports the Lootr-compatibility fix from
 Alvaro842DEV/AsyncLocator-Refined and adds per-feature config toggles, robust pending-map
 NBT marking, blocked pickup of in-progress maps, deferred map-name preservation, and
 hardened executor lifecycle with full exception isolation.

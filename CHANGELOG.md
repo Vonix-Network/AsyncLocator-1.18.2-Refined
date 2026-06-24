@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 relative to the `1.18.2-*` line of releases.
 
+## [Unreleased]
+
+### Changed
+- **Project renamed `Refined` → `Reforged`.** The GitHub repository, README, mods.toml
+  URLs, and code comments now use the **Reforged** name to make it unambiguous that this
+  is the Vonix-Network 1.18.2 lineage and not the same project as
+  `Alvaro842DEV/AsyncLocator-Refined` (NeoForge 1.21.1). The mod ID (`asynclocator`),
+  artifact name (`asynclocator-1.18.2-*.jar`), package paths, and config keys are
+  **unchanged** — this is identity-only and drop-in safe for existing installs.
+
 ## [1.18.2-1.3.1] — 2026-06-22
 
 Pre-deployment hardening pass on top of 1.3.0.

@@ -27,7 +27,7 @@ public class ExplorationMapFunctionLogic {
 	private ExplorationMapFunctionLogic() {}
 
 	public static void invalidateMap(ItemStack mapStack, ServerLevel level, BlockPos pos) {
-		// Vonix-Refined fix: walk player containers/inventories FIRST.
+		// Vonix-Reforged fix: walk player containers/inventories FIRST.
 		// This avoids the BlockEntity item-handler capability lookup, which spams
 		// "Couldn't find item handler capability on chest" WARNs and contributes
 		// to chunk-load deadlocks when the source chest is a Lootr inventory
@@ -57,7 +57,7 @@ public class ExplorationMapFunctionLogic {
 	) {
 		CommonLogic.updateMap(mapStack, level, pos, scale, destinationType);
 
-		// Vonix-Refined fix: the map ItemStack instance is the same one the
+		// Vonix-Reforged fix: the map ItemStack instance is the same one the
 		// player sees in their container slot (reference equality holds on
 		// 1.18.2), so we just need to nudge the menu to broadcast the updated
 		// NBT to clients. Works regardless of whether the source block entity
